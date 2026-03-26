@@ -1,15 +1,20 @@
 from selenium import webdriver
-from selenium.webdriver.edge.options import Options
+import time
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-import time
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 
 
 def login(user: str, password: str):
-    opciones = Options()
-    opciones.add_argument("--headless=new") # Esto lo vuelve invisible
-    opciones.add_argument("--disable-gpu")
-    driver = webdriver.Edge()
+    # 1. Configuramos las opciones para un servidor Linux sin pantalla
+    chrome_options = Options()
+    chrome_options.add_argument("--headless=new") # Vuelve el navegador invisible
+    chrome_options.add_argument("--no-sandbox")   # Requisito de seguridad para Linux
+    chrome_options.add_argument("--disable-dev-shm-usage") # Evita caídas por falta de memoria
+    
+    # 2. Iniciamos el driver de Chrome (GitHub ya lo tiene instalado)
+    driver = webdriver.Chrome(options=chrome_options)
     url_login = "https://sso.uc.cl/cas/login?service=https%3A%2F%2Fgo.ing.uc.cl%2Fforce"
     driver.get(url_login)
 
